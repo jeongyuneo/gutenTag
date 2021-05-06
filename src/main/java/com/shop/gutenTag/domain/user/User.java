@@ -1,7 +1,6 @@
 package com.shop.gutenTag.domain.user;
 
 //import com.shop.gutenTag.domain.order.Order;
-//import com.shop.gutenTag.domain.posts.BaseTimeEntity;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class User {
-    //public class User extends BaseTimeEntity {
     @Id
     @GeneratedValue
     @Column(name = "user_id")
