@@ -1,6 +1,5 @@
 package com.shop.gutenTag.web;
 
-import com.shop.gutenTag.domain.user.UserRepository;
 import com.shop.gutenTag.service.users.UserService;
 import com.shop.gutenTag.web.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -10,12 +9,11 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 public class UserController {
-    private final UserRepository userRepository;
     private final UserService userService;
 
     @PostMapping("/signup/{id}")
     public String signup(@RequestBody SignupRequestDto signupRequestDto) {
-        if (userRepository.findByUserId(userService.signup(signupRequestDto)) != null) {
+        if (userService.signup(signupRequestDto).equals(Long.valueOf(-1))) {
             return "signup-fail";
         }
         return "signup-success";
@@ -23,7 +21,11 @@ public class UserController {
 
     @PostMapping("/login/{id}")
     public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto) {
-        return new LoginResponseDto(userService.login(loginRequestDto));
+        LoginResponseDto loginResponseDto = userService.login(loginRequestDto);
+        if (loginResponseDto.getId().equals(Long.valueOf(-1))) {
+            return new LoginResponseDto();
+        }
+        return loginResponseDto;
     }
 
     @GetMapping("/logout/{id}")

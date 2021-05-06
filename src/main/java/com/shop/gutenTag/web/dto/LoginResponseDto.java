@@ -18,4 +18,12 @@ public class LoginResponseDto {
         this.telephone = entity.getTelephone();
         this.address = entity.getAddress();
     }
+
+    public LoginResponseDto(){
+        this.id = Long.valueOf(-1);
+        this.email = "0";
+        this.name = "0";
+        this.telephone = "0";
+        this.address = "0";
+    }
 }

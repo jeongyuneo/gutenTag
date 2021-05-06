@@ -24,11 +24,14 @@ public class UserService {
     }
 
     @Transactional
-    public User login(LoginRequestDto requestDto) {
-        LoginResponseDto loginResponseDto = new LoginResponseDto(findById(requestDto.toEntity().getEmail(), requestDto.toEntity().getPassword()));
-        System.out.println("Login : " + loginResponseDto.getEmail());
-        httpSession.setAttribute("user", loginResponseDto);
-        return userRepository.findByUserId(loginResponseDto.getId());
+    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
+        User user = findById(loginRequestDto.getEmail(), loginRequestDto.getPassword());
+        if (user.getEmail().equals("0")) {
+            return new LoginResponseDto();
+        }
+        System.out.println("[Login] email : " + user.getEmail());
+        httpSession.setAttribute("user", user);
+        return new LoginResponseDto(userRepository.findById(loginRequestDto.getEmail()));
     }
 
     @Transactional
@@ -46,10 +49,11 @@ public class UserService {
     public User findById(String email, String password) {
         try {
             User entity = userRepository.findByUserIdAndPassword(email, password);
+            System.out.println(entity);
             if (entity != null) {
                 return entity;
             } else {
-                throw new IllegalArgumentException("해당 아이디가 없습니다. userId = " + email);
+                return new User("0", "0", "0", "0", "0");
             }
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("해당 아이디가 없습니다. userId = " + email);
