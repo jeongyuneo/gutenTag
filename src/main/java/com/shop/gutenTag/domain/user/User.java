@@ -1,54 +1,56 @@
 package com.shop.gutenTag.domain.user;
 
-import com.shop.gutenTag.domain.posts.BaseTimeEntity;
+//import com.shop.gutenTag.domain.order.Order;
+//import com.shop.gutenTag.domain.posts.BaseTimeEntity;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class User extends BaseTimeEntity {
-
+public class User {
+    //public class User extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+    @Column(name = "user_id")
     private Long id;
+
+    //@OneToMany(mappedBy = "order_id")
+    //private List<Order> orders = new ArrayList<Order>();
 
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
-    private String userId;
+    private String email;
 
     @Column(nullable = false)
     private String password;
 
-    //@Column(nullable = false)
-    //private String email;
-
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private String telephone;
+
+    @Column(nullable = false, length = 300)
+    private String address;
 
     @Builder
-    public User(String name, String userId, String password, String email, Role role) {
+    public User(String name, String email, String password, String telephone, String address) {
         this.name = name;
-        this.userId = userId;
+        this.email = email;
         this.password = password;
-        //this.email = email;
-        this.role = role;
+        this.telephone = telephone;
+        this.address = address;
     }
 
-    public User update(String name, String password, String email) {
-        this.name = name;
-        this.password = password;
-        //this.email = email;
+    public User update(String telephone, String address) {
+        this.telephone = telephone;
+        this.address = address;
         return this;
-    }
-
-    public String getRoleKey() {
-        return this.role.getKey();
     }
 }

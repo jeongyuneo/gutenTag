@@ -1,20 +1,21 @@
 package com.shop.gutenTag.web.dto;
 
 import com.shop.gutenTag.domain.user.User;
+import lombok.Getter;
 
-public class UserFindRequestDto {
-
-    private String userId;
+@Getter
+public class LoginRequestDto {
+    private String email;
     private String password;
 
-    public UserFindRequestDto(String userId, String password) {
-        this.userId = userId;
+    public LoginRequestDto (String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
     public User toEntity() {
         return User.builder()
-                .userId(userId)
+                .email(email)
                 .password(password)
                 .build();
     }

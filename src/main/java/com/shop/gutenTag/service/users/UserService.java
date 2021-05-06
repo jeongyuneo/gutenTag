@@ -1,10 +1,8 @@
 package com.shop.gutenTag.service.users;
 
-import com.shop.gutenTag.domain.user.User;
 import com.shop.gutenTag.domain.user.UserRepository;
-import com.shop.gutenTag.web.dto.UserFindRequestDto;
-import com.shop.gutenTag.web.dto.UserFindResponseDto;
-import com.shop.gutenTag.web.dto.UserSaveRequestDto;
+import com.shop.gutenTag.web.dto.*;
+import com.shop.gutenTag.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,37 +12,47 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 @Service
 public class UserService {
-
     private final UserRepository userRepository;
     private final HttpSession httpSession;
 
     @Transactional
-    public Long createUser(UserSaveRequestDto signupRequestDto) {
-        return userRepository.save(signupRequestDto.toEntity()).getId();
+    public Long signup(SignupRequestDto requestDto) {
+        if (userRepository.findById(requestDto.toEntitiy().getEmail()) != null) {
+            return Long.valueOf(-1);
+        }
+        return userRepository.save(requestDto.toEntitiy()).getId();
     }
 
     @Transactional
-    public String findUser(UserFindRequestDto userFindRequestDto) {
-        UserFindResponseDto userFindResponseDto = findById(userFindRequestDto.toEntity().getUserId(), userFindRequestDto.toEntity().getPassword());
-        System.out.println(userFindResponseDto.getUserId());
-        httpSession.setAttribute("user", userFindResponseDto);
-        return userFindResponseDto.getUserId();
+    public User login(LoginRequestDto requestDto) {
+        LoginResponseDto loginResponseDto = new LoginResponseDto(findById(requestDto.toEntity().getEmail(), requestDto.toEntity().getPassword()));
+        System.out.println("Login : " + loginResponseDto.getEmail());
+        httpSession.setAttribute("user", loginResponseDto);
+        return userRepository.findByUserId(loginResponseDto.getId());
     }
 
-    public UserFindResponseDto findById(String userId, String password) {
+    @Transactional
+    public String logout(String email) {
         try {
-            User user = userRepository.findByUserIdAndPassword(userId, password);
-            if (user != null) {
-                return new UserFindResponseDto(user);
-            } else {
-                throw new IllegalArgumentException("해당 아이디가 없습니다. id = " + userId);
-            }
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("해당 아이디가 없습니다. id = " + userId);
+            User entity = userRepository.findById(email);
+            System.out.println("Logout : " + entity.getEmail());
+            httpSession.removeAttribute("user");
+            return "/logout";
+        } catch (Exception e) {
+            throw new IllegalArgumentException("해당 아이디가 없습니다. userId = " + email);
         }
     }
-    /*@Transactional
-    public Long updateUser(Long id, UserUpdateRequestDto userUpdateRequestDto) {
 
-    }*/
+    public User findById(String email, String password) {
+        try {
+            User entity = userRepository.findByUserIdAndPassword(email, password);
+            if (entity != null) {
+                return entity;
+            } else {
+                throw new IllegalArgumentException("해당 아이디가 없습니다. userId = " + email);
+            }
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("해당 아이디가 없습니다. userId = " + email);
+        }
+    }
 }
