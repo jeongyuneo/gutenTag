@@ -48,12 +48,14 @@ public class UserService {
 
     public User findById(String email, String password) {
         try {
-            User entity = userRepository.findByUserIdAndPassword(email, password);
-            System.out.println(entity);
-            if (entity != null) {
-                return entity;
-            } else {
+            User entityWithEmail = userRepository.findById(email);
+            User entityWithEmailAndPassword = userRepository.findByUserIdAndPassword(email, password);
+            if (entityWithEmail == null) {
                 return new User("0", "0", "0", "0", "0");
+            } else if (entityWithEmailAndPassword == null) {
+                return new User("1", "0", "0", "0", "0");
+            } else {
+                return entityWithEmailAndPassword;
             }
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("해당 아이디가 없습니다. userId = " + email);

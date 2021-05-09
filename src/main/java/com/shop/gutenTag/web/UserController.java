@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/signup/{id}")
+    @PostMapping("/signup")
     public String signup(@RequestBody SignupRequestDto signupRequestDto) {
         if (userService.signup(signupRequestDto).equals(Long.valueOf(-1))) {
             return "signup-fail";
@@ -19,7 +19,7 @@ public class UserController {
         return "signup-success";
     }
 
-    @PostMapping("/login/{id}")
+    @PostMapping("/login")
     public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto) {
         LoginResponseDto loginResponseDto = userService.login(loginRequestDto);
         if (loginResponseDto.getId().equals(Long.valueOf(-1))) {
@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping("/logout/{id}")
-    public String logout(@RequestBody LogoutRequestDto logoutRequestDto) {
-        return userService.logout(logoutRequestDto.getEmail());
+    public String logout(@PathVariable String email) {
+        return userService.logout(email);
     }
 }
