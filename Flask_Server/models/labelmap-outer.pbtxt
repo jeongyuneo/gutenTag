@@ -1,0 +1,32 @@
+item {
+    id: 1
+    name: 'blazer'
+}
+item {
+    id: 2
+    name: 'cardigan'
+}
+item {
+    id: 3
+    name: 'coat'
+}
+item {
+    id: 4
+    name: 'fleece'
+}
+item {
+    id: 5
+    name: 'hoodzipup'
+}
+item {
+    id: 6
+    name: 'leather_mustang'
+}
+item {
+    id: 7
+    name: 'longpadding'
+}
+item {
+    id: 8
+    name: 'padding'
+}

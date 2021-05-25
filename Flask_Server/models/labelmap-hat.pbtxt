@@ -1,0 +1,12 @@
+item {
+    id: 1
+    name: 'beanie'
+}
+item {
+    id: 2
+    name: 'bucket'
+}
+item {
+    id: 3
+    name: 'cap'
+}
