@@ -17,7 +17,7 @@ public class UserService {
 
     @Transactional
     public Long signup(SignupRequestDto requestDto) {
-        if (userRepository.findById(requestDto.toEntitiy().getEmail()) != null) {
+        if (userRepository.findByEmail(requestDto.toEntitiy().getEmail()) != null) {
             return Long.valueOf(-1);
         }
         return userRepository.save(requestDto.toEntitiy()).getId();
@@ -25,19 +25,18 @@ public class UserService {
 
     @Transactional
     public LoginResponseDto login(LoginRequestDto loginRequestDto) {
-        User user = findById(loginRequestDto.getEmail(), loginRequestDto.getPassword());
+        User user = findByIdAndPassword(loginRequestDto.getEmail(), loginRequestDto.getPassword());
         if (user.getEmail().equals("0")) {
             return new LoginResponseDto();
         }
-        System.out.println("[Login] email : " + user.getEmail());
         httpSession.setAttribute("user", user);
-        return new LoginResponseDto(userRepository.findById(loginRequestDto.getEmail()));
+        return new LoginResponseDto(userRepository.findByEmail(loginRequestDto.getEmail()));
     }
 
     @Transactional
     public String logout(String email) {
         try {
-            User entity = userRepository.findById(email);
+            User entity = userRepository.findByEmail(email);
             System.out.println("Logout : " + entity.getEmail());
             httpSession.removeAttribute("user");
             return "/logout";
@@ -46,9 +45,9 @@ public class UserService {
         }
     }
 
-    public User findById(String email, String password) {
+    public User findByIdAndPassword(String email, String password) {
         try {
-            User entityWithEmail = userRepository.findById(email);
+            User entityWithEmail = userRepository.findByEmail(email);
             User entityWithEmailAndPassword = userRepository.findByUserIdAndPassword(email, password);
             if (entityWithEmail == null) {
                 return new User("0", "0", "0", "0", "0");

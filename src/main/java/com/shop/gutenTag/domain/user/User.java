@@ -1,26 +1,22 @@
 package com.shop.gutenTag.domain.user;
 
-//import com.shop.gutenTag.domain.order.Order;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Getter
 @NoArgsConstructor
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "user_id")
     private Long id;
-
-    //@OneToMany(mappedBy = "order_id")
-    //private List<Order> orders = new ArrayList<Order>();
 
     @Column(nullable = false)
     private String name;
