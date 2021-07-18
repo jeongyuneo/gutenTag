@@ -17,10 +17,10 @@ public class UserService {
 
     @Transactional
     public Long signup(SignupRequestDto requestDto) {
-        if (userRepository.findByEmail(requestDto.toEntitiy().getEmail()) != null) {
+        if (userRepository.findByEmail(requestDto.toEntity().getEmail()) != null) {
             return Long.valueOf(-1);
         }
-        return userRepository.save(requestDto.toEntitiy()).getId();
+        return userRepository.save(requestDto.toEntity()).getId();
     }
 
     @Transactional
