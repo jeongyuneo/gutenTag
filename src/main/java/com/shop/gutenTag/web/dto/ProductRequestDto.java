@@ -11,11 +11,11 @@ public class ProductRequestDto {
     public ProductRequestDto() {
 
     }
+
     public ProductRequestDto(String category) {
         this.category = category;
     }
 
-    @Builder
     public Product toEntity() {
         return Product
                 .builder()

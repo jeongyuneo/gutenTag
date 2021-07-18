@@ -12,7 +12,6 @@ public class SignupRequestDto {
     private String telephone;
     private String address;
 
-    @Builder
     public SignupRequestDto(String name, String email, String password, String telephone, String address) {
         this.name = name;
         this.email = email;
@@ -21,7 +20,7 @@ public class SignupRequestDto {
         this.address = address;
     }
 
-    public User toEntitiy() {
+    public User toEntity() {
         return User.builder()
                 .name(name)
                 .email(email)

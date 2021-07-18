@@ -11,11 +11,11 @@ public class RecommendRequestDto {
     public RecommendRequestDto() {
 
     }
+
     public RecommendRequestDto(String minorCategory) {
         this.minorCategory = minorCategory;
     }
 
-    @Builder
     public Product toEntity() {
         return Product
                 .builder()
